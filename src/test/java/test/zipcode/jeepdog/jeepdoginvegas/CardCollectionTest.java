@@ -14,12 +14,18 @@ public class CardCollectionTest {
     CardCollection collection;
     Card[] cards;
 
+    /**
+     * for testGetCards method
+     */
     @Before
     public void before() {
         cards = new Card[]{new Card(), new Card()};
         collection = new CardCollection(cards);
     }
 
+    /**
+     * checks number of cards being sent is as expected
+     */
     @Test
     public void testCardArrayConstructor() {
         collection = new CardCollection(cards);
@@ -38,6 +44,7 @@ public class CardCollectionTest {
         assertEquals("addCard should add a new card to the array", initialCards + 1, collection.getNumberOfCards());
     }
 
+    @Test
     public void testAddCardAddsToLastIndex() {
         Card card = new Card();
         collection.addCard(card);
