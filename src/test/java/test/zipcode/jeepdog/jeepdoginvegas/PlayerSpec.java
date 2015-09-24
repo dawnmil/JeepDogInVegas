@@ -19,6 +19,7 @@ public class PlayerSpec {
 
     @Test
     public void testGetChips() {
+
         assertEquals("Your chips equal zero", 0, snoopy.getChips());
     }
 
