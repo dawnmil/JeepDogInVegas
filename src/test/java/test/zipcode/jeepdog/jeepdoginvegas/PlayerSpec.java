@@ -1,6 +1,6 @@
-package playerClass;
+package test.zipcode.jeepdog.jeepdoginvegas;
 
-import Player.Player;
+import zipcode.jeepdog.jeepdoginvegas.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -50,9 +50,8 @@ public class PlayerSpec {
 
     @Test
     public void testRequestBet(){
-        assertEquals("What is your bet?", 2, snoopy.requestBet());
+        int bet = snoopy.requestBet();
+        assertTrue("Bet should be less than 10", bet <= 10);
+        assertTrue("Bet should be greater than or equal to 0", bet >= 0);
     }
-
-
-
 }

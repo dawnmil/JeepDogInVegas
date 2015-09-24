@@ -19,7 +19,7 @@ public class CardCollectionTest {
      */
     @Before
     public void before() {
-        cards = new Card[]{new Card(), new Card()};
+        cards = new Card[]{new Card(CardSuit.CLUBS, CardValue.ACE), new Card(CardSuit.CLUBS, CardValue.ACE)};
         collection = new CardCollection(cards);
     }
 
@@ -40,13 +40,13 @@ public class CardCollectionTest {
     @Test
     public void testAddCardIncreasesSize() {
         int initialCards = collection.getNumberOfCards();
-        collection.addCard(new Card());
+        collection.addCard(new Card(CardSuit.CLUBS, CardValue.ACE));
         assertEquals("addCard should add a new card to the array", initialCards + 1, collection.getNumberOfCards());
     }
 
     @Test
     public void testAddCardAddsToLastIndex() {
-        Card card = new Card();
+        Card card = new Card(CardSuit.CLUBS, CardValue.ACE);
         collection.addCard(card);
 
         Card[] cards = collection.getCards();

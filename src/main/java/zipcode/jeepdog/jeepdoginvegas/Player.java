@@ -1,4 +1,4 @@
-package Player;
+package zipcode.jeepdog.jeepdoginvegas;
 
 /**
  * the implementation of a blackjack Player
@@ -61,7 +61,6 @@ public class Player {
      * @return request  bet
      */
     public int requestBet(){
-
         return (int) (Math.random() * 10);
     }
 }
