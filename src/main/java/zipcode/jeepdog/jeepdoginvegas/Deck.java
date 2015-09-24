@@ -1,7 +1,5 @@
 package zipcode.jeepdog.jeepdoginvegas;
 
-
-
 /**
  * Created by jguevara on 9/23/15.
  */
@@ -34,6 +32,5 @@ public class Deck extends CardCollection {
         }
         int random = (int) (Math.random() *  this.getNumberOfCards());
         return this.removeCard(random);
-
     }
 }

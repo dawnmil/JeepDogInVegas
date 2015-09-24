@@ -129,8 +129,7 @@ public class Casino {
      */
     public static void main(String[] args) {
         Table[] tables = new Table[] {
-                new BlackJackTable(),
-                new PokerTable()
+                new Table()
         };
 
         Casino casino = new Casino(tables);
@@ -141,7 +140,7 @@ public class Casino {
         do{
             table = casino.selectTable(br);
             if(table != null) {
-                table.play();
+                table.play(br);
             }
 
             leaveCasino = casino.isReadyToQuit(br);
