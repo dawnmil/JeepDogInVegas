@@ -1,13 +1,20 @@
 package zipcode.jeepdog.jeepdoginvegas;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Created by dmilnamow on 9/21/15.
  */
 public class CardCollection {
-    private Card[] cardArray;
+    private ArrayList<Card> cards;
+
+    public CardCollection() {
+        this.cards = new ArrayList<Card>();
+    }
 
     public CardCollection(Card[] cards) {
-        this.cardArray = cards;
+        this.cards = new ArrayList<Card>(Arrays.asList(cards));
     }
 
     /**
@@ -15,26 +22,36 @@ public class CardCollection {
      * @param card  The card to add to this collection
      */
     public void addCard(Card card){
-        if (cardArray == null){
-            cardArray = new Card[1];
-            cardArray[0] = card;
-        }
-        else {
-            Card[] tempArray = new Card[cardArray.length + 1];
-            for(int i=0; i<cardArray.length; i++){
-                tempArray[i] = cardArray[i];
-            }
-            tempArray[tempArray.length -1] = card;
-            cardArray = tempArray;
-        }
+        this.cards.add(card);
     }
 
     /**
      * Get this collection's array of cards
-     * @return
+     * @return  an array of this collection's cards
      */
     public Card[] getCards(){
-        return cardArray;
+        if(this.cards.size() == 0) {
+            return null;
+        }
+        else {
+            return this.cards.toArray(new Card[this.cards.size()]);
+        }
+    }
+
+    /**
+     *  Remove a card from this card collection
+     * @param index The index of the card to remove
+     * @return      Return the card that was removed from the deck
+     */
+    public Card removeCard(int index) {
+        // passed index is outside the range of allowed indices
+        if(index < 0 || index >= this.cards.size()) {
+            return null;
+        }
+        // passed index is a valid index of cards
+        else {
+            return this.cards.remove(index);
+        }
     }
 
     /**
@@ -42,18 +59,18 @@ public class CardCollection {
      * @return The number of cards in this collection
      */
     public int getNumberOfCards() {
-        return cardArray == null ? 0 : cardArray.length;
+        return this.cards.size();
     }
 
     /**
      * Return the cards in this collection as a space separated string
-     * @return
+     * @return Return a string representation of this card collection
      */
     public String toString(){
         StringBuilder sb = new StringBuilder();
 
-        if(cardArray != null) {
-            for(Card c : cardArray) {
+        if(this.cards.size() > 0) {
+            for(Card c : this.cards) {
                 sb.append(c.toString()).append(" ");
             }
         }
