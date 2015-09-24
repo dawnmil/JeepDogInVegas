@@ -45,20 +45,25 @@ public class DeckSpec {
         assertEquals("Deck equals 260 cards", 260, deck.getNumberOfCards());
     }
 
+    /**
+     * here we test that we pulled a card from deck and it returns card and that the deck amount sjrinks by 1
+     */
     @Test
     public void testPullCard(){
         int startCards = deck.getNumberOfCards();
         Card card = deck.pullCard();
-        // it returns something
         assertNotNull("Returns pulled card", card);
-        // shrinks when it returns card
+
         assertEquals("Checks deck shrinks when card is pulled",startCards - 1,deck.getNumberOfCards());
     }
 
+    /**
+     * will fail when no cards in deck
+     */
     @Test
     public void testPullCardFromEmptyDeck(){
         deck = new Deck(0);
-        //"fails if there is no cards in deck by returning null"
+
         assertNull("Should return null if there is no cards in deck",deck.pullCard());
     }
 
