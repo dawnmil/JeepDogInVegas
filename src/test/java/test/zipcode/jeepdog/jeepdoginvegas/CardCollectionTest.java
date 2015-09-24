@@ -31,7 +31,7 @@ public class CardCollectionTest {
     @Test
     public void testDefaultConstructor() {
         collection = new CardCollection();
-        assertEquals("There should be two cards in the collection", 0, collection.getNumberOfCards());
+        assertEquals("There should be no cards in the collection", 0, collection.getNumberOfCards());
     }
 
     /**
