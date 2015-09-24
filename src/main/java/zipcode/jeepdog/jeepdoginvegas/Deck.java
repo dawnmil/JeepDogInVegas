@@ -8,7 +8,7 @@ package zipcode.jeepdog.jeepdoginvegas;
 public class Deck extends CardCollection {
     /**
      * takes number of decks and values of cards and suit of cards
-     * @param numDecks
+     * @param numDecks the number of decks to use when building this deck
      */
     public Deck(int numDecks) {
         super();
@@ -26,7 +26,7 @@ public class Deck extends CardCollection {
 
     /**
      *  gives you random card and removes one card from deck
-     * @return
+     * @return returns a random card from the deck
      */
     public Card pullCard(){
         if(this.getNumberOfCards() == 0){
