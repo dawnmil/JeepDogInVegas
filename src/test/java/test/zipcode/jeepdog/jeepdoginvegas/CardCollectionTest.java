@@ -13,14 +13,25 @@ import zipcode.jeepdog.jeepdoginvegas.*;
 public class CardCollectionTest {
     CardCollection collection;
     Card[] cards;
+    Card aceOfClubs = new Card(CardSuit.CLUBS, CardValue.ACE);
+    Card aceOfSpades = new Card(CardSuit.SPADES, CardValue.ACE);
 
     /**
      * for testGetCards method
      */
     @Before
     public void before() {
-        cards = new Card[]{new Card(CardSuit.CLUBS, CardValue.ACE), new Card(CardSuit.CLUBS, CardValue.ACE)};
+        cards = new Card[]{this.aceOfClubs, this.aceOfSpades};
         collection = new CardCollection(cards);
+    }
+
+    /**
+     * checks number of cards being sent is as expected
+     */
+    @Test
+    public void testDefaultConstructor() {
+        collection = new CardCollection();
+        assertEquals("There should be two cards in the collection", 0, collection.getNumberOfCards());
     }
 
     /**
@@ -31,7 +42,6 @@ public class CardCollectionTest {
         collection = new CardCollection(cards);
         assertEquals("There should be two cards in the collection", 2, collection.getNumberOfCards());
     }
-
 
     /**
      * This test ensure that cardArray grows by one and that the new card
@@ -55,7 +65,13 @@ public class CardCollectionTest {
 
     @Test
     public void testGetCards() {
-        assertSame("There should be two cards in the collection", cards, collection.getCards());
+        assertEquals("There should be two cards in the collection", cards, collection.getCards());
+    }
+
+    @Test
+    public void testGetCardsReturnsNullForEmptyCollection() {
+        this.collection = new CardCollection();
+        assertNull("There should not be any cards returned from an empty collection", collection.getCards());
     }
 
     @Test
@@ -63,5 +79,37 @@ public class CardCollectionTest {
         String combinedString = cards[0].toString() + " " + cards[1].toString();
         String returned = collection.toString();
         assertEquals("toString should return space separated, concatentated toString of cards.", combinedString, returned);
+    }
+
+    @Test
+    public void testRemoveCardIndexZero() {
+        int initialCards = collection.getNumberOfCards();
+        Card removed = collection.removeCard(0);
+        assertEquals("removeCard(0) should shrink the array length by 1", initialCards - 1, collection.getNumberOfCards());
+        assertSame("removeCard(0) should return the card at index 0", removed, this.aceOfClubs);
+    }
+
+    @Test
+    public void testRemoveCardOtherIndex() {
+        int initialCards = collection.getNumberOfCards();
+        Card removed = collection.removeCard(1);
+        assertEquals("removeCard(1) should shrink the array length by 1", initialCards - 1, collection.getNumberOfCards());
+        assertSame("removeCard(1) should return the card at index 1", removed, this.aceOfSpades);
+    }
+
+    @Test
+    public void testRemoveCardLessThanZeroFails() {
+        int initialCards = collection.getNumberOfCards();
+        Card removed = collection.removeCard(-1);
+        assertNull("Attempting to remove a card from a negative index should return null", removed);
+        assertEquals("Attempting to remove a card from a negative index should not change the array length", initialCards, collection.getNumberOfCards());
+    }
+
+    @Test
+    public void testRemoveCardGreaterThanMaxFails() {
+        int initialCards = collection.getNumberOfCards();
+        Card removed = collection.removeCard(initialCards + 1);
+        assertNull("Attempting to remove a card from a larger index than exists should return null", removed);
+        assertEquals("Attempting to remove a card from a larger index than exists should not change the array length", initialCards, collection.getNumberOfCards());
     }
 }
