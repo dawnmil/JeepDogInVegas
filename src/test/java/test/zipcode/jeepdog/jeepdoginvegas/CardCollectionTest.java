@@ -43,6 +43,12 @@ public class CardCollectionTest {
         assertEquals("There should be two cards in the collection", 2, collection.getNumberOfCards());
     }
 
+    @Test
+    public void testNullArrayConstructor() {
+        collection = new CardCollection(null);
+        assertEquals("There should be no cards in the collection", 0, collection.getNumberOfCards());
+    }
+
     /**
      * This test ensure that cardArray grows by one and that the new card
      * gets inserted at the right chronological position

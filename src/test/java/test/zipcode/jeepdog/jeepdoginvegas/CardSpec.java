@@ -37,16 +37,16 @@ public class CardSpec {
         card = new Card(CardSuit.SPADES,CardValue.ACE);
         assertEquals("Method should return a value", CardValue.ACE, card.getValue());
 
-        Card cardx = new Card(CardSuit.SPADES,CardValue.FOUR);
-        assertEquals("Method should return a value", CardValue.FOUR, cardx.getValue());
+        Card card1 = new Card(CardSuit.SPADES,CardValue.FOUR);
+        assertEquals("Method should return a value", CardValue.FOUR, card1.getValue());
     }
 
     @Test
     public void testToString(){
-        Card ruru = new Card(CardSuit.SPADES,CardValue.ACE);
-        assertEquals("Method should return a value", "As", ruru.toString());
+        Card card2 = new Card(CardSuit.SPADES,CardValue.ACE);
+        assertEquals("Method should return a value", "As", card2.toString());
 
-        Card momo = new Card(CardSuit.HEARTS,CardValue.THREE);
-        assertEquals("Method should return a value", "3h", momo.toString());
+        Card card3 = new Card(CardSuit.HEARTS,CardValue.THREE);
+        assertEquals("Method should return a value", "3h", card3.toString());
     }
 }
