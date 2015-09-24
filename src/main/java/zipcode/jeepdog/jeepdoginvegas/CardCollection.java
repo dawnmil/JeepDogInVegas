@@ -14,7 +14,12 @@ public class CardCollection {
     }
 
     public CardCollection(Card[] cards) {
-        this.cards = new ArrayList<Card>(Arrays.asList(cards));
+        if(cards == null) {
+            this.cards = new ArrayList<Card>();
+        }
+        else {
+            this.cards = new ArrayList<Card>(Arrays.asList(cards));
+        }
     }
 
     /**

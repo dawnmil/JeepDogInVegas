@@ -19,7 +19,7 @@ public class BlackJackHandScorerSpec {
     @Before
     public void beforeTests(){
 
-        this.hand = new Hand();
+        this.hand = new Hand(new Player("Bob"));
     }
 
     @Test
