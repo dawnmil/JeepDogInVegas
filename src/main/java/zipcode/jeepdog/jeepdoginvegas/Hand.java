@@ -29,7 +29,7 @@ public class Hand extends CardCollection{
     /**
      * setScore method
      * Sets the score with an int value passed on to it.
-     * @param value
+     * @param value the value of the score
      */
     public void setScore(int value){
         score  = value;
