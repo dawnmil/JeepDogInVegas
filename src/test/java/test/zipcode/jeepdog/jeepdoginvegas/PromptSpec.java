@@ -25,7 +25,7 @@ public class PromptSpec {
         this.bufferedReader = Mockito.spy(new BufferedReader(new StringReader("0\n")));
         this.prompt = new Prompt(bufferedReader);
 
-        this.options = new String[] {"Lonely message"};
+        this.options = new String[] { "Lonely message" };
 
         int onlyChoice = prompt.promptMenu("Choose the only message", this.options);
         assertEquals("Only call to promptMenu should return 0", 0, onlyChoice);
@@ -125,5 +125,12 @@ public class PromptSpec {
         this.prompt = new Prompt(this.bufferedReader);
 
         prompt.promptConfirmation("Choose yes/no");
+    }
+
+    @Test
+    public void testSystemInPrompt() {
+        this.prompt = Prompt.createSystemInPrompt();
+
+        assertTrue(this.prompt instanceof Prompt);
     }
 }

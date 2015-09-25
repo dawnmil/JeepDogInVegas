@@ -84,15 +84,15 @@ public class Table {
 
     /**
      * Sit down and play at this table
-     * @param br A bufferedReader used to prompt the user
+     * @param    prompt Used to request input from the user
      */
-    public void play(BufferedReader br) {
+    public void play(Prompt prompt) {
         System.out.println("You sat down at the " + this.getName());
 
         do {
             this.setupRound();
             this.playRound();
-        } while(! this.isReadyToLeave(br));
+        } while(! this.isReadyToLeave(prompt));
 
         System.out.println("Thanks for playing at the " + this.getName());
     }
@@ -106,18 +106,16 @@ public class Table {
 
     /**
      * Ask the user if they're ready to leave the table
-     * @param br    A BufferedReader used to prompt the user
-     * @return      Return a boolean indicating the users choice
+     * @param   prompt  Used to request input from the user
+     * @return          Return a boolean indicating the users response
      */
-    public boolean isReadyToLeave(BufferedReader br) {
+    public boolean isReadyToLeave(Prompt prompt) {
         System.out.println("Are you ready to leave the " + this.getName() + "?");
         try {
-            String response = br.readLine();
-
-            return response.length() > 0 && (response.charAt(0) == 'y' || response.charAt(0) == 'Y');
+            return prompt.promptConfirmation("Are you ready to leave the " + this.getName() + "?");
         }
         catch(Exception e) {
-            return false;
+            return true;
         }
     }
 

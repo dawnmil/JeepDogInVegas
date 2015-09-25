@@ -1,6 +1,7 @@
 package zipcode.jeepdog.jeepdoginvegas;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,55 +45,42 @@ public class Casino {
     }
 
     /**
-     * Choose a table based on input from the passed Scanner
+     * Prompt the user to request a table
      *
-     * @param   br    A BufferedReader to read the decision from
-     * @return        Return the table chosen or null if no tables are available
+     * @param   prompt    A prompt used to request input from the user
+     * @return            Return the table chosen or null if no tables are available
      */
-    public Table selectTable(BufferedReader br) {
-        int numberOfTables = this.getNumberOfTables();
+    public Table selectTable(Prompt prompt) {
         String[] tableNames = this.getTableNames();
+        String[] options;
 
-        System.out.println("Tables:");
-        if(numberOfTables > 0) {
-            for(int i=0; i < tableNames.length; i++) {
-                System.out.println(i + ": " + tableNames[i]);
-            }
+        if(this.getTableNames() == null) {
+            options = new String[1];
+        }
+        else {
+            options = new String[tableNames.length + 1];
+            System.arraycopy(tableNames, 0, options, 0, tableNames.length);
         }
 
-        System.out.println(numberOfTables + ": none of the above");
+        options[options.length -1] = "None of the above";
 
-        int selectionNum;
-        do {
-            System.out.println("Please enter the number of your selection:");
+        int selectionNum = prompt.promptMenu("Please choose a table", options);
 
-            try{
-                selectionNum = Integer.parseInt(br.readLine());
-            }
-            catch(Exception e) {
-                System.out.println("That is not a valid selection.");
-                selectionNum = -1;
-            }
-        } while(selectionNum < 0 || selectionNum > numberOfTables);
-
-        return selectionNum < numberOfTables ? this.tables.get(selectionNum) : null;
+        return selectionNum < this.getNumberOfTables() ? this.tables.get(selectionNum) : null;
     }
 
     /**
-     * Read the first character from scanner to determine if the user is ready to quit
+     * Ask the user if they are ready to leave
      *
-     * @param   br      A BufferedReader to read the input from
-     * @return          A boolean indicating if the user is ready to leave
+     * @param   prompt  A prompt used to request input
+     * @return          A boolean indicating the users response
      */
-    public boolean isReadyToQuit(BufferedReader br) {
-        System.out.println("Are you ready to leave the casino?");
+    public boolean isReadyToQuit(Prompt prompt) {
         try {
-            String response = br.readLine();
-
-            return response.length() > 0 && (response.charAt(0) == 'y' || response.charAt(0) == 'Y');
+            return prompt.promptConfirmation("Are you ready to leave the casino?");
         }
-        catch(Exception e) {
-            return false;
+        catch(IOException e) {
+            return true;
         }
     }
 
@@ -136,14 +124,14 @@ public class Casino {
 
         Table table;
         Boolean leaveCasino;
-        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        Prompt prompt = Prompt.createSystemInPrompt();
         do{
-            table = casino.selectTable(br);
+            table = casino.selectTable(prompt);
             if(table != null) {
-                table.play(br);
+                table.play(prompt);
             }
 
-            leaveCasino = casino.isReadyToQuit(br);
+            leaveCasino = casino.isReadyToQuit(prompt);
         }while(! leaveCasino);
     }
 }

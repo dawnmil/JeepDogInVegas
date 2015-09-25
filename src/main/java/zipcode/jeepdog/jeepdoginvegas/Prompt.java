@@ -16,6 +16,14 @@ public class Prompt {
     }
 
     /**
+     * Create a new prompt using System.in as the input source
+     * @return A new Prompt that takes input from System.in
+     */
+    public static Prompt createSystemInPrompt() {
+        return new Prompt(new BufferedReader(new InputStreamReader(System.in)));
+    }
+
+    /**
      * Prompt the user to select an option from the messages passed to it
      *
      * @param message The message to display

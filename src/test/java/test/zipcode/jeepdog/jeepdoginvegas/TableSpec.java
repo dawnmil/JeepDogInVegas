@@ -19,10 +19,15 @@ public class TableSpec {
     private Table table;
     private Player bob = new Player("Bob");
     private Player sarah = new Player("Sarah");
+    private Prompt prompt;
 
     @Before
     public void before() {
         this.table = new Table();
+        this.bob = new Player("Bob");
+        this.sarah = new Player("Sarah");
+
+        this.prompt = mock(Prompt.class);
     }
 
     @Test
@@ -87,36 +92,46 @@ public class TableSpec {
 
     @Test
     public void testIsReadyToLeave() {
-        assertTrue("isReadyToQuit should return true 'Yes'", this.table.isReadyToLeave(new BufferedReader(new StringReader("Yes\n"))));
-        assertTrue("isReadyToQuit should return true from 'yes'", this.table.isReadyToLeave(new BufferedReader(new StringReader("y\n"))));
-        assertFalse("isReadyToQuit should return false from 'no'", this.table.isReadyToLeave(new BufferedReader(new StringReader("no\n"))));
-        assertFalse("isReadyToQuit should return false from 'No'", this.table.isReadyToLeave(new BufferedReader(new StringReader("N\n"))));
-        assertFalse("isReadyToQuit should return false", this.table.isReadyToLeave(new BufferedReader(new StringReader("\n"))));
+        try {
+            doReturn(true).when(this.prompt).promptConfirmation(anyString());
+            assertTrue("isReadyToLeave should return true if prompt returns true", this.table.isReadyToLeave(this.prompt));
+
+            doReturn(false).when(this.prompt).promptConfirmation(anyString());
+            assertFalse("isReadyToLeave should return true if prompt returns false", this.table.isReadyToLeave(this.prompt));
+
+            doThrow(new IOException("Should not be thrown")).when(this.prompt).promptConfirmation(anyString());
+            assertTrue("isReadyToLeave should return true if prompt throws an exception", this.table.isReadyToLeave(this.prompt));
+        }
+        catch(IOException e) {
+            fail("Exception should not be thrown within isReadyToLeave");
+        }
     }
 
     @Test
     public void testPlayLoopsOnce() {
         BufferedReader mockReader = Mockito.spy(new BufferedReader(new StringReader("y\n")));
-        table.play(mockReader);
+        this.prompt = new Prompt(mockReader);
+        table.play(prompt);
 
         try {
             verify(mockReader, times(1)).readLine();
         }
         catch(IOException e) {
-            // TODO
+            fail("IOException should not be thrown within play.");
         }
     }
 
     @Test
     public void testPlayLoopsThrice() {
         BufferedReader mockReader = Mockito.spy(new BufferedReader(new StringReader("n\nn\ny\n")));
-        table.play(mockReader);
+        this.prompt = new Prompt(mockReader);
+        table.play(prompt);
 
         try{
             verify(mockReader, times(3)).readLine();
         }
         catch(IOException e) {
-            // TODO figure out why it thinks an io.exception was never caught and I am forced to place this here
+            fail("IOException should not be thrown within play.");
         }
     }
 }

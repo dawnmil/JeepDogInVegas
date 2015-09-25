@@ -6,8 +6,8 @@ import org.junit.Test;
 import zipcode.jeepdog.jeepdoginvegas.*;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.StringReader;
-import java.util.Scanner;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -18,6 +18,7 @@ import static org.mockito.Mockito.*;
 public class CasinoSpec {
     private Casino casino;
     private Table table;
+    private Prompt prompt;
 
     @Before
     public void before() {
@@ -25,6 +26,8 @@ public class CasinoSpec {
 
         table = mock(Table.class);
         doReturn("Table").when(table).getName();
+
+        this.prompt = mock(Prompt.class);
     }
 
     @Test
@@ -72,45 +75,50 @@ public class CasinoSpec {
     @Test
     public void testGetTableNamesOneTable() {
         casino.addTable(table);
-        assertEquals("Get table names should return a single name when there is one table", new String[]{table.getName()}, casino.getTableNames());
+        assertArrayEquals("Get table names should return a single name when there is one table", new String[]{table.getName()}, casino.getTableNames());
     }
 
     @Test
     public void testGetTableNamesTwoTables() {
         casino.addTable(table);
         casino.addTable(table);
-        assertEquals("Get table names should return a single name when there is one table", new String[]{table.getName(), table.getName()}, casino.getTableNames());
-    }
-
-    @Test
-    public void testSelectTable() {
-        casino.addTable(table);
-        casino.addTable(table);
-        assertEquals("Get table names should return a single name when there is one table", new String[]{table.getName(), table.getName()}, casino.getTableNames());
+        assertArrayEquals("Get table names should return a single name when there is one table", new String[]{table.getName(), table.getName()}, casino.getTableNames());
     }
 
     @Test
     public void testSelectTableNoTables() {
-        casino = new Casino();
-        assertEquals("selectTable should return null with no tables",null,casino.selectTable(new BufferedReader(new StringReader("0"))));
+        doReturn(0).when(this.prompt).promptMenu(anyString(), any(String[].class));
+        assertNull("selectTable should return null with no tables", casino.selectTable(this.prompt));
     }
 
     @Test
     public void testSelectTableTwoTables() {
         Table otherTable = new Table();
-        casino = new Casino(new Table[]{ table, otherTable});
-        assertSame("selectTable should choose table 0", table, casino.selectTable(new BufferedReader(new StringReader("0"))));
-        assertSame("selectTable should choose table 1", otherTable, casino.selectTable(new BufferedReader(new StringReader("1"))));
-        assertSame("selectTable should choose table 0 after initially failing", table, casino.selectTable(new BufferedReader(new StringReader("a\n0"))));
-        assertNull("selectTable should return null if 2 is entered", casino.selectTable(new BufferedReader(new StringReader("2"))));
+
+        casino.addTable(table);
+        casino.addTable(otherTable);
+
+        doReturn(0).when(this.prompt).promptMenu(anyString(), any(String[].class));
+        assertSame("selectTable should choose table 0", table, casino.selectTable(this.prompt));
+
+        doReturn(2).when(this.prompt).promptMenu(anyString(), any(String[].class));
+        assertNull("selectTable should return null if 2 is entered", casino.selectTable(this.prompt));
     }
 
     @Test
     public void testIsReadyToQuit() {
-        assertTrue("isReadyToQuit should return true 'Yes'", casino.isReadyToQuit(new BufferedReader(new StringReader("Yes\n"))));
-        assertTrue("isReadyToQuit should return true from 'yes'", casino.isReadyToQuit(new BufferedReader(new StringReader("y\n"))));
-        assertFalse("isReadyToQuit should return false from 'no'", casino.isReadyToQuit(new BufferedReader(new StringReader("no\n"))));
-        assertFalse("isReadyToQuit should return false from 'No'", casino.isReadyToQuit(new BufferedReader(new StringReader("N\n"))));
-        assertFalse("isReadyToQuit should return false", casino.isReadyToQuit(new BufferedReader(new StringReader("\n"))));
+        try {
+            doReturn(true).when(this.prompt).promptConfirmation(anyString());
+            assertTrue("isReadyToQuit should return true if prompt returns true", casino.isReadyToQuit(this.prompt));
+
+            doReturn(false).when(this.prompt).promptConfirmation(anyString());
+            assertFalse("isReadyToQuit should return true if prompt returns false", casino.isReadyToQuit(this.prompt));
+
+            doThrow(new IOException("Should not be thrown")).when(this.prompt).promptConfirmation(anyString());
+            assertTrue("isReadyToQuit should return true if prompt throws an exception", casino.isReadyToQuit(this.prompt));
+        }
+        catch(IOException e) {
+            fail("Exception should not be thrown within isReadyToQuit");
+        }
     }
 }
