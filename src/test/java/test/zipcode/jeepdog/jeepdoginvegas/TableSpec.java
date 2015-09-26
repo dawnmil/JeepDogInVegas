@@ -42,7 +42,7 @@ public class TableSpec {
 
     @Test
     public void testSetCasino() {
-        Casino casino = new Casino(new Table[]{ new Table() });
+        Casino casino = new Casino();
         this.table.setCasino(casino);
         assertSame("Get casino should return a reference to the same casino set with setCasino", casino, this.table.getCasino());
     }
