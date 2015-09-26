@@ -22,34 +22,32 @@ public class CasinoSpec {
 
     @Before
     public void before() {
-        casino = new Casino();
+        this.prompt = mock(Prompt.class);
 
-        table = mock(Table.class);
+        this.casino = spy(new Casino());
+        doReturn(this.prompt).when(this.casino).getPrompt();
+
+        this.table = mock(Table.class);
         doReturn("Table").when(table).getName();
 
-        this.prompt = mock(Prompt.class);
     }
 
     @Test
     public void testEmptyConstructor() {
         assertEquals("casino starts without any tables for empty constructor", 0, casino.getNumberOfTables());
-    }
-
-    @Test
-    public void testTablesConstructor() {
-        casino = new Casino(new Table[] { table, table});
-        assertEquals("casino have a constructor that can take an array of tables and properly set them", 2, casino.getNumberOfTables());
+        assertNotNull("casino starts with a prompt", this.casino.getPrompt());
+        assertNotNull("casino starts with a humanPlayer", this.casino.getHumanPlayer());
     }
 
     @Test
     public void testGetHumanPlayer() {
-        casino = new Casino(new Table[] { table, table });
+        casino = new Casino();
         assertNotNull("getHumanPlayer gets the Casino's humanPlayer", casino.getHumanPlayer());
     }
 
     @Test
     public void testCanGetNumberOfTables() {
-        assertEquals("casino starts without any tables",0,casino.getNumberOfTables());
+        assertEquals("casino starts without any tables", 0, casino.getNumberOfTables());
     }
 
     @Test
@@ -88,7 +86,7 @@ public class CasinoSpec {
     @Test
     public void testSelectTableNoTables() {
         doReturn(0).when(this.prompt).promptMenu(anyString(), any(String[].class));
-        assertNull("selectTable should return null with no tables", casino.selectTable(this.prompt));
+        assertNull("selectTable should return null with no tables", casino.selectTable());
     }
 
     @Test
@@ -99,26 +97,31 @@ public class CasinoSpec {
         casino.addTable(otherTable);
 
         doReturn(0).when(this.prompt).promptMenu(anyString(), any(String[].class));
-        assertSame("selectTable should choose table 0", table, casino.selectTable(this.prompt));
+        assertSame("selectTable should choose table 0", table, casino.selectTable());
 
         doReturn(2).when(this.prompt).promptMenu(anyString(), any(String[].class));
-        assertNull("selectTable should return null if 2 is entered", casino.selectTable(this.prompt));
+        assertNull("selectTable should return null if 2 is entered", casino.selectTable());
     }
 
     @Test
     public void testIsReadyToQuit() {
         try {
             doReturn(true).when(this.prompt).promptConfirmation(anyString());
-            assertTrue("isReadyToQuit should return true if prompt returns true", casino.isReadyToQuit(this.prompt));
+            assertTrue("isReadyToQuit should return true if prompt returns true", casino.isReadyToQuit());
 
             doReturn(false).when(this.prompt).promptConfirmation(anyString());
-            assertFalse("isReadyToQuit should return true if prompt returns false", casino.isReadyToQuit(this.prompt));
+            assertFalse("isReadyToQuit should return true if prompt returns false", casino.isReadyToQuit());
 
             doThrow(new IOException("Should not be thrown")).when(this.prompt).promptConfirmation(anyString());
-            assertTrue("isReadyToQuit should return true if prompt throws an exception", casino.isReadyToQuit(this.prompt));
+            assertTrue("isReadyToQuit should return true if prompt throws an exception", casino.isReadyToQuit());
         }
         catch(IOException e) {
             fail("Exception should not be thrown within isReadyToQuit");
         }
+    }
+
+    @Test
+    public void testGetPrompt() {
+        assertNotNull("Get prompt should return a prompt", this.casino.getPrompt());
     }
 }

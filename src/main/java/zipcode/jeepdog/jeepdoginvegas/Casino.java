@@ -9,6 +9,7 @@ import java.util.Arrays;
 public class Casino {
     private ArrayList<Table> tables;
     private HumanPlayer humanPlayer;
+    private Prompt prompt;
 
     /**
      * Default constructor
@@ -16,15 +17,7 @@ public class Casino {
     public Casino() {
         this.tables = new ArrayList<Table>();
         this.humanPlayer = new HumanPlayer();
-    }
-
-    /**
-     * Table constructor
-     * @param tables        an array of game tables
-     */
-    public Casino(Table[] tables) {
-        this.tables = new ArrayList<Table>(Arrays.asList(tables));
-        this.humanPlayer = new HumanPlayer();
+        this.prompt = Prompt.createSystemInPrompt();
     }
 
     /**
@@ -50,7 +43,7 @@ public class Casino {
      * @param   prompt    A prompt used to request input from the user
      * @return            Return the table chosen or null if no tables are available
      */
-    public Table selectTable(Prompt prompt) {
+    public Table selectTable() {
         String[] tableNames = this.getTableNames();
         String[] options;
 
@@ -64,7 +57,7 @@ public class Casino {
 
         options[options.length -1] = "None of the above";
 
-        int selectionNum = prompt.promptMenu("Please choose a table", options);
+        int selectionNum = this.getPrompt().promptMenu("Please choose a table", options);
 
         return selectionNum < this.getNumberOfTables() ? this.tables.get(selectionNum) : null;
     }
@@ -75,9 +68,9 @@ public class Casino {
      * @param   prompt  A prompt used to request input
      * @return          A boolean indicating the users response
      */
-    public boolean isReadyToQuit(Prompt prompt) {
+    public boolean isReadyToQuit() {
         try {
-            return prompt.promptConfirmation("Are you ready to leave the casino?");
+            return this.getPrompt().promptConfirmation("Are you ready to leave the casino?");
         }
         catch(IOException e) {
             return true;
@@ -111,27 +104,32 @@ public class Casino {
     }
 
     /**
+     * Get prompt
+     * @return  a prompt used to request input from the user
+     */
+    public Prompt getPrompt() {
+        return this.prompt;
+    }
+
+    /**
      * Main entry point for the Casino
      *
      * @param args An array of arguments passed in when starting the program
      */
     public static void main(String[] args) {
-        Table[] tables = new Table[] {
-                new Table()
-        };
+        Casino casino = new Casino();
 
-        Casino casino = new Casino(tables);
+        casino.addTable(new Table());
 
         Table table;
         Boolean leaveCasino;
-        Prompt prompt = Prompt.createSystemInPrompt();
         do{
-            table = casino.selectTable(prompt);
+            table = casino.selectTable();
             if(table != null) {
-                table.play(prompt);
+                table.play(casino.getPrompt());
             }
 
-            leaveCasino = casino.isReadyToQuit(prompt);
+            leaveCasino = casino.isReadyToQuit();
         }while(! leaveCasino);
     }
 }
