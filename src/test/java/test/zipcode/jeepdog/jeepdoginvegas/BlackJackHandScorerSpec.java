@@ -8,18 +8,20 @@ import static org.junit.Assert.*;
 
 
 /**
- * Created by dmilnamow on 9/24/15.
+ * Class specification and test cases for the BlackJackHandScorer class
+ *
+ * @author Dawn Milnamow
  */
 public class BlackJackHandScorerSpec {
 
     private BlackJackHandScorer blackJackHandScorer = new BlackJackHandScorer();
 
-    private Hand hand;
+    private BlackJackHand hand;
 
     @Before
     public void beforeTests(){
 
-        this.hand = new Hand(new Player("Bob"));
+        this.hand = new BlackJackHand(new Player("Bob"));
     }
 
     @Test

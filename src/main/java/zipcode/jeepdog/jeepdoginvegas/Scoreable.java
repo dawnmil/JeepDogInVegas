@@ -41,4 +41,10 @@ public interface Scoreable {
      * @return Returns a score reflecting the relative strength of the base score
      */
     public int getRelativeScore();
+
+    /**
+     * Calculate and update the score of this scoreable based on some implementation
+     * specific method.
+     */
+    public void calculateScore();
 }
