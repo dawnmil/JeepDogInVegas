@@ -25,6 +25,14 @@ public class HumanPlayer extends Player {
     }
 
     /**
+     * Is this player human?
+     * @return Return true if this player is human
+     */
+    public boolean isHuman() {
+        return true;
+    }
+
+    /**
      * Request a bet amount from the player
      *
      * @return The requested bet

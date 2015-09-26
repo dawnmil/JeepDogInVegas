@@ -57,4 +57,9 @@ public class PlayerSpec {
         assertTrue("Bet should be less than 10", bet <= 10);
         assertTrue("Bet should be greater than or equal to 0", bet >= 0);
     }
+
+    @Test
+    public void testIsHuman() {
+        assertFalse("This player should not be human", this.snoopy.isHuman());
+    }
 }

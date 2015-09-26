@@ -7,9 +7,10 @@ import zipcode.jeepdog.jeepdoginvegas.*;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.mock;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 /**
- * Class specificationa nd test cases for the HumanPlayer class
+ * Class specification and test cases for the HumanPlayer class
  *
  * @author Gregory Furlong
  */
@@ -31,5 +32,10 @@ public class HumanPlayerSpec {
         int bet = this.humanPlayer.requestBet();
         assertEquals("requestBet should call prompt.promptInteger to determine how much to return", 10, bet);
         assertEquals("requestBet should decrease chips by amount of bet", initialChips - bet, this.humanPlayer.getChips());
+    }
+
+    @Test
+    public void testIsHuman() {
+        assertTrue("This player should be human", this.humanPlayer.isHuman());
     }
 }

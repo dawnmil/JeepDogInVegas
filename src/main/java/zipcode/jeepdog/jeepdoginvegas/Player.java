@@ -25,6 +25,14 @@ public class Player {
     }
 
     /**
+     * Is this player human
+     * @return Return false if this player should be computer controlled
+     */
+    public boolean isHuman() {
+        return false;
+    }
+
+    /**
      * Get chips
      *
      * @return value of chips
