@@ -1,16 +1,19 @@
 package zipcode.jeepdog.jeepdoginvegas;
 
 /**
- * Created by dmilnamow on 9/24/15.
+ * Scores a hand of blackjack, determining how many points
+ * it is currently worth
+ *
+ * @author Dawn Milnamow
  */
 public class BlackJackHandScorer {
 
     /**
-     * playerScore constructor
+     * playerScore
      * @param hand  takes a hand to be scored based on the card score values in the hand
      * @return if score is greater than 21, bust score is 0
      */
-    public int playerScore(Hand hand) {
+    public int playerScore(BlackJackHand hand) {
 
         /**
          * If hand has no cards, return score of 0
