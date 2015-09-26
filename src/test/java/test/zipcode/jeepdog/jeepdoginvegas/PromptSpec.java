@@ -13,7 +13,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.times;
 
 /**
- * Created by gfurlong on 9/24/15.
+ * Class specification and test cases for the Prompt class
+ *
+ * @author Gregory Furlong
  */
 public class PromptSpec {
     private Prompt prompt;
@@ -132,5 +134,55 @@ public class PromptSpec {
         this.prompt = Prompt.createSystemInPrompt();
 
         assertTrue(this.prompt instanceof Prompt);
+    }
+
+    @Test
+    public void testPromptIntegerReadOnce() {
+        this.bufferedReader = Mockito.spy(new BufferedReader(new StringReader("3\n")));
+        this.prompt = new Prompt(bufferedReader);
+
+        int onlyChoice = prompt.promptInteger(0, 5);
+        assertEquals("Only call to promptInteger should return 3", 3, onlyChoice);
+
+        try {
+            verify(this.bufferedReader, times(1)).readLine();
+        }
+        catch(IOException e) {
+            fail("An exception should not be thrown when verifying number of readLine calls to spy object.");
+        }
+    }
+
+    @Test
+    public void testPromptIntegerReadFive() {
+        this.bufferedReader = Mockito.spy(new BufferedReader(new StringReader("-1\n-5\n8\na\n3\n")));
+        this.prompt = new Prompt(bufferedReader);
+
+        int onlyChoice = prompt.promptInteger(0, 5);
+        assertEquals("Fifth call to readLine in promptInteger should get valid integer and return 3", 3, onlyChoice);
+
+        try {
+            verify(this.bufferedReader, times(5)).readLine();
+        }
+        catch(IOException e) {
+            fail("An exception should not be thrown when verifying number of readLine calls to spy object.");
+        }
+    }
+
+    @Test
+    public void testPromptIntegerChooseMin() {
+        this.bufferedReader = Mockito.spy(new BufferedReader(new StringReader("2\n")));
+        this.prompt = new Prompt(bufferedReader);
+
+        int onlyChoice = prompt.promptInteger(2, 8);
+        assertEquals("Choosing min argument of promptInteger should succeed", 2, onlyChoice);
+    }
+
+    @Test
+    public void testPromptIntegerChooseMax() {
+        this.bufferedReader = Mockito.spy(new BufferedReader(new StringReader("8\n")));
+        this.prompt = new Prompt(bufferedReader);
+
+        int onlyChoice = prompt.promptInteger(3, 8);
+        assertEquals("Choosing max argument of promptInteger should succeed", 8, onlyChoice);
     }
 }

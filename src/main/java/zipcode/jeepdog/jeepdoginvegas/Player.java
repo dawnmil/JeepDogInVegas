@@ -1,8 +1,12 @@
 package zipcode.jeepdog.jeepdoginvegas;
 
 /**
- * the implementation of a blackjack Player
- * Created by jguevara on 9/21/15.
+ * The base Player class.
+ *
+ * Has methods to manipulate the players chip total, request a bet and
+ * randomly choose from a simple list of options.
+ *
+ * @author Joel Guevara
  */
 public class Player {
     /**
@@ -12,12 +16,17 @@ public class Player {
 
     private int chips;
 
-    public Player(String name){
+    public Player() {
+        this.name = "Player";
+    }
 
+    public Player(String name){
         this.name = name;
     }
 
     /**
+     * Get chips
+     *
      * @return value of chips
      */
     public int getChips(){
@@ -26,6 +35,7 @@ public class Player {
     }
 
     /**
+     * Add chips
      * @param selectAmount of chips to add to pot
      */
     public void addChips(int selectAmount){
@@ -34,11 +44,12 @@ public class Player {
     }
 
     /**
+     * Remove chips
+     *
      * @param amount that can be removed from person pot of chips
-     * @throws Exception
      */
     public boolean removeChips(int amount) {
-        if(chips > amount){
+        if(chips >= amount){
             chips -= amount;
             return true;
         }else {
@@ -48,8 +59,10 @@ public class Player {
     }
 
     /**
-     * @param option that can be picked during play by computer
-     * @return
+     * Select an option from the passed array
+     *
+     * @param option Array of options to choose from
+     * @return       Return the index of the selected option
      */
     public int selectOption(String[] option){
 
@@ -57,10 +70,15 @@ public class Player {
     }
 
     /**
+     * Request a bet from the player
      *
-     * @return request  bet
+     * Removes the bet from the player
+     * @return request  The bet decided upon
      */
     public int requestBet(){
-        return (int) (Math.random() * 10);
+        int bet = (int) (Math.random() * 10);
+
+        this.removeChips(bet);
+        return bet;
     }
 }

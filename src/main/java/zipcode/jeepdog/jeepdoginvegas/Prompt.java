@@ -6,7 +6,13 @@ import java.io.InputStreamReader;
 import java.lang.IllegalArgumentException;
 
 /**
- * Created by gfurlong on 9/24/15.
+ * Prompt class
+ *
+ * Includes methods to simplify prompting the user for certain types of input, including
+ * choosing a selection from a list of strings, choosing an integer within a specified range
+ * and answer yes/no qeuestions.
+ *
+ * @author Gregory Furlong
  */
 public class Prompt {
     BufferedReader bufferedReader;
@@ -40,19 +46,7 @@ public class Prompt {
             System.out.println(i + ": " + options[i]);
         }
 
-        int selectionNum;
-        do {
-            System.out.println("\nPlease enter the number of your selection:");
-
-            try {
-                selectionNum = Integer.parseInt(this.bufferedReader.readLine());
-            } catch (Exception e) {
-                System.out.println("That is not a valid selection.");
-                selectionNum = -1;
-            }
-        } while (selectionNum < 0 || selectionNum >= options.length);
-
-        return selectionNum;
+        return this.promptInteger(0, options.length);
     }
 
     /**
@@ -70,5 +64,30 @@ public class Prompt {
 
             // return true unless some variation of no was chosen
             return response.length() > 0 && !(response.charAt(0) == 'n' || response.charAt(0) == 'N');
+    }
+
+    /**
+     * Prompt the user for an integer between the specified min and max
+     *
+     * @param min   The minimum allowed input
+     * @param max   The maximum allowed input
+     * @return      The chosen integer
+     */
+    public int promptInteger(int min, int max) {
+        int selectionNum = 0;
+        boolean loop = true;
+        do {
+            loop = false;
+            System.out.println("\nPlease select a number (" + min + "-" + max + "):");
+
+            try {
+                selectionNum = Integer.parseInt(this.bufferedReader.readLine());
+            } catch (Exception e) {
+                loop = true;
+                System.out.println("That is not a valid selection.");
+            }
+        } while (loop || selectionNum < min || selectionNum > max);
+
+        return selectionNum;
     }
 }

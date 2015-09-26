@@ -6,7 +6,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 /**
- * Created by jguevara on 9/22/15.
+ * Class specification and test cases for the base Player class
+ *
+ * @author Joel Guevara
  */
 public class PlayerSpec {
     private Player snoopy;
