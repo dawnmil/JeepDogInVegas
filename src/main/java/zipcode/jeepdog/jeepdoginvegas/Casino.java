@@ -83,6 +83,7 @@ public class Casino {
      */
     public void addTable(Table table) {
         this.tables.add(table);
+        table.setCasino(this);
     }
 
     /**
@@ -120,6 +121,9 @@ public class Casino {
         Casino casino = new Casino();
 
         casino.addTable(new Table());
+        casino.addTable(new BlackJackTable());
+
+        casino.getHumanPlayer().addChips(5000);
 
         Table table;
         Boolean leaveCasino;
