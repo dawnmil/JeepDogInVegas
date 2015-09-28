@@ -40,7 +40,6 @@ public class Casino {
     /**
      * Prompt the user to request a table
      *
-     * @param   prompt    A prompt used to request input from the user
      * @return            Return the table chosen or null if no tables are available
      */
     public Table selectTable() {
@@ -65,7 +64,6 @@ public class Casino {
     /**
      * Ask the user if they are ready to leave
      *
-     * @param   prompt  A prompt used to request input
      * @return          A boolean indicating the users response
      */
     public boolean isReadyToQuit() {
@@ -122,6 +120,7 @@ public class Casino {
 
         casino.addTable(new Table());
         casino.addTable(new BlackJackTable());
+        casino.addTable(new Cafeteria());
 
         casino.getHumanPlayer().addChips(5000);
 
