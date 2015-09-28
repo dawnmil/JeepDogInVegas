@@ -124,4 +124,12 @@ public class Table {
     public void setupRound() {
         System.out.println("Let me wipe the table down for you.");
     }
+
+    /**
+     * Get opponents
+     * @return  Return the ArrayList of opponent players
+     */
+    public ArrayList<Player> getOpponents() {
+        return this.opponents;
+    }
 }

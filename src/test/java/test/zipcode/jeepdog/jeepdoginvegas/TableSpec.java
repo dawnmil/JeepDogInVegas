@@ -134,4 +134,11 @@ public class TableSpec {
             fail("IOException should not be thrown within play.");
         }
     }
+
+    @Test
+    public void testGetOpponents() {
+        assertEquals("Unless explicitly added, the table should not have any opponents", 0, this.table.getOpponents().size());
+        this.table.addPlayer(new Player());
+        assertEquals("After adding a player, the table should now have an opponent", 1, this.table.getOpponents().size());
+    }
 }
