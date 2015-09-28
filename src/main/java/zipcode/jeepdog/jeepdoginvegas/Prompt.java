@@ -46,7 +46,7 @@ public class Prompt {
             System.out.println(i + ": " + options[i]);
         }
 
-        return this.promptInteger(0, options.length);
+        return this.promptInteger(0, options.length - 1);
     }
 
     /**

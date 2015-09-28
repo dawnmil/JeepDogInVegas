@@ -110,7 +110,6 @@ public class Table {
      * @return          Return a boolean indicating the users response
      */
     public boolean isReadyToLeave(Prompt prompt) {
-        System.out.println("Are you ready to leave the " + this.getName() + "?");
         try {
             return prompt.promptConfirmation("Are you ready to leave the " + this.getName() + "?");
         }
